@@ -70,6 +70,8 @@ def create_web_api(config: Config) -> WebApi:
 
 
 class HttpClient:
+    
+    USER_AGENT = 'NextcloudNewsUpdater/11.0.0 (https://github.com/nextcloud/news-updater)'
     def get(self, url: str, auth: Tuple[str, str],
             timeout: int = 5 * 60) -> str:
         """
@@ -79,6 +81,8 @@ class HttpClient:
         auth_header = 'Basic ' + base64.b64encode(basic_auth).decode('utf-8')
         req = Request(url)
         req.add_header('Authorization', auth_header)
+        req.add_header('User-Agent', self.USER_AGENT)
+        
         response = urlopen(req, timeout=timeout)
         return response.read().decode('utf8')
 
